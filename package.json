@@ -1,0 +1,28 @@
+{
+  "name": "minesweeper",
+  "version": "1.0.0",
+  "description": "A simple minesweeper clone for the terminal",
+  "keywords": [ "minesweeper", "game" ],
+  "license": "MIT",
+  "author": "Bradley C Bailey <brad@memoryleak.org>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bcbailey/minesweeper"
+  },
+  "scripts": {
+    "start": "tsx src/game.ts",
+    "build": "tsc",
+    "test": "echo \"100% uncovered\""
+  },
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "picocolors": "^1.0.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.5",
+    "@types/prompts": "^2.4.9",
+    "tsx": "^4.10.2",
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,7 +1,7 @@
 import prompts from 'prompts'
 import minimist from 'minimist'
 import Grid from './grid'
-import { clear, render } from './ui'
+import { clear, render } from './render'
 
 const argv = minimist(process.argv.slice(2), {
   alias: {
@@ -24,6 +24,7 @@ if (argv.help) {
 const rows  = argv.rows || 10
 const cols  = argv.cols || 10
 const mines = argv.mines
+const grid = new Grid(rows, cols, mines)
 
 function prompt() {
   return prompts([
@@ -64,8 +65,28 @@ function prompt() {
   })
 }
 
+function gameover(tries: number = 0, time: number = 0) {
+  const pre = '   '
+
+  // Display the fully revealed grid
+  clear()
+  render(grid, true)
+
+  if (tries) {
+    console.log(grid.isWon()
+      ? `${pre}You won in ${tries} tries!`
+      : `${pre}Oh no, you lost after ${tries} tries! :(`)
+  }
+  else {
+    console.log(`${pre}Quitter!`)
+  }
+
+  if (time) {
+    console.log(`${pre}Time: ${time} seconds`)
+  }
+}
+
 async function main() {
-  const grid = new Grid(rows, cols, mines)
   let playing = true
   let started = 0
   let tries = 0
@@ -75,9 +96,11 @@ async function main() {
     render(grid)
 
     const input = await prompt()
-    if (!input.action) {// ctrl+c
+    if (!input.action) { // ctrl+c
       break
     }
+
+    tries++
 
     const x = input.x - 1
     const y = input.y - 1
@@ -85,6 +108,7 @@ async function main() {
       case 'quit':
         grid.revealAll()
         playing = false
+        tries-- // Don't count it as a try
         break
 
       case 'reveal':
@@ -101,21 +125,14 @@ async function main() {
         break
     }
 
-    tries++
     playing &&= !grid.isGameover()
   }
 
-  // Display the fully revealed grid
-  clear()
-  render(grid, true)
-  console.log(grid.isWon()
-    ? `   You won in ${tries} tries!`
-    : `   Oh no, you lost after ${tries} tries! :(`)
+  let time = started
+    ? Math.floor((Date.now() - started) / 1000)
+    : 0
 
-  if (started) {
-    let secs = Math.floor((Date.now() - started) / 1000)
-    console.log('   Time: ' + secs + ' seconds')
-  }
+  gameover(tries, time)
 }
 
 main()

@@ -1,9 +1,9 @@
-# Minesweeper
+# Terminal Minesweeper
 
 A simple version of the classic game [minesweeper](https://en.wikipedia.org/wiki/Minesweeper_(video_game))
 that can be run from the terminal. Written in TypeScript.
 
-![Game in progress](game-in-progress.png)
+![Game in progress](images/game.png)
 
 ## Running
 
@@ -25,4 +25,4 @@ npm start
 
 ## License
 
-MIT
+Distributed under the MIT License. See LICENSE.md for more information.
